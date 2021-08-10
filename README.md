@@ -1,5 +1,5 @@
-# backendRocketseat
-Projeto backend - ROCKETSEAT
+# Projeto Rocketseat
+Projeto backend e frontend - ROCKETSEAT
 
 
 Projeto backend promovido pela Rocketseat - aplicação com a biblioteca multer para gerenciamento e manipulação de arquivos.
