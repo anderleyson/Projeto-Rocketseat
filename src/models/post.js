@@ -1,4 +1,10 @@
 const mongoose = require('mongoose');
+const aws = require('aws-sdk');
+const fs = require('fs');
+const path = require('path');
+const { promisify } = require('util');
+
+const s3 = new aws.S3(); 
 
 const postSchema = new mongoose.Schema({
 
@@ -9,7 +15,22 @@ const postSchema = new mongoose.Schema({
     createdAt:{
         type: Date,
         default: Date.now,
-    },
-
+    }
 });
+
+postSchema.pre('save', function(){
+    if(!this.url){
+        this.url = `${process.env.APP_URL}/files/${this.key}`;
+    }
+});
+postSchema.pre('remove', function(){
+    if(process.env.STORAGE_TYPE === "S3"){
+        return s3.deleteObject({
+            Bucket: process.env.BUCKET,
+            Key: this.key
+        }).promise();
+    }else{
+        return promisify(fs.unlink)(path.resolve(__dirname, '..', '..', 'tmp', 'uploads', this.key))
+    }   
+})
 module.exports = mongoose.model('Post', postSchema);

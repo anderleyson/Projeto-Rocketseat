@@ -6,7 +6,7 @@ class Connection{
         this.databaseConnectionMongo();
     }
     databaseConnectionMongo(){
-        this.mongoConnection = mongoose.connect("mongodb://localhost/uploads",{
+        this.mongoConnection = mongoose.connect(process.env.MONGO_CONNECTION,{
             useNewUrlParser: true,
             useUnifiedTopology: true, 
             useFindAndModify: false,
